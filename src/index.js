@@ -1,22 +1,22 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import React from "react";
+import PropTypes from "prop-types";
+import moment from "moment";
 
-import styles from './styles.css'
+import Calendar from "./calendars/index";
 
-export default class ExampleComponent extends Component {
-  static propTypes = {
-    text: PropTypes.string
-  }
+import "./styles.css";
 
-  render() {
-    const {
-      text
-    } = this.props
+const ExampleComponent = ({ text }) => {
+  return (
+    <div className="">
+      {new Date(moment()).getDate()} Example Component: {text}
+      <Calendar />
+    </div>
+  );
+};
 
-    return (
-      <div className={styles.test}>
-        Example Component: {text}
-      </div>
-    )
-  }
-}
+ExampleComponent.propTypes = {
+  text: PropTypes.string
+};
+
+export default ExampleComponent;

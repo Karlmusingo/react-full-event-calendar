@@ -1,0 +1,235 @@
+import React, { Component } from "react";
+import moment from "moment";
+import PropTypes from "prop-types";
+import DayCalendar from "./DayCalendar";
+import WeekCalendar from "./WeekCalendar";
+import MonthCalendar from "./MonthCalendar";
+import VerticalDayCalendar from "./VerticalDayCalendar";
+import "../styles.css";
+
+const titleText = "working in the weekend";
+
+const eventsDefault = [
+  {
+    startTime: new Date(moment().add(2, "hour")),
+    endTime: new Date(moment().add(3, "hour")),
+    title: `${titleText}`
+  },
+  {
+    startTime: new Date(moment().add(-3, "hour")),
+    endTime: new Date(moment().add(-2, "hour")),
+    title: `${titleText}`
+  },
+  {
+    startTime: new Date(),
+    endTime: new Date(moment().add(1, "hour")),
+    title: `${titleText}`
+  }
+];
+
+class Calendar extends Component {
+  state = { calendarView: "week", day: new Date() };
+
+  componentDidMount = () => {
+    const { defaultCalendarView, defaultDate } = this.props;
+    this.setState({
+      calendarView: defaultCalendarView,
+      day: defaultDate
+    });
+  };
+
+  calendarSetting = view => {
+    this.setState({
+      calendarView: view
+    });
+  };
+
+  setDay = day => {
+    this.setState({
+      day
+    });
+  };
+
+  render() {
+    const {
+      events = eventsDefault,
+      dayOrientation,
+      onDayChange,
+      onWeekChange,
+      onMonthChange
+    } = this.props;
+
+    const { calendarView, day } = this.state;
+
+    return (
+      <div style={{ position: "relative" }}>
+        <div className="calendar-view-setting">
+          <button
+            className={calendarView === "day" ? "active" : ""}
+            onClick={() => this.calendarSetting("day")}
+          >
+            D
+          </button>
+          <button
+            className={calendarView === "week" ? "active" : ""}
+            onClick={() => this.calendarSetting("week")}
+          >
+            W
+          </button>
+          <button
+            className={calendarView === "month" ? "active" : ""}
+            onClick={() => this.calendarSetting("month")}
+          >
+            M
+          </button>
+        </div>
+        {calendarView === "day" ? (
+          // dayOrientation === "horizontal" ? (
+          <DayCalendar
+            events={events}
+            onDayChange={onDayChange}
+            day={day}
+            setDay={this.setDay}
+          />
+        ) : // ) : (
+        // <VerticalDayCalendar
+        //   events={events}
+        //   onDayChange={onDayChange}
+        //   day={day}
+        //   setDay={this.setDay}
+        // />
+        // )
+        null}
+        {/* {calendarView === "week" ? (
+          <WeekCalendar
+            events={events}
+            onWeekChange={onWeekChange}
+            day={day}
+            setDay={this.setDay}
+          />
+        ) : null} */}
+        {calendarView === "month" ? (
+          <MonthCalendar
+            events={events}
+            onMonthChange={onMonthChange}
+            day={day}
+            setDay={this.setDay}
+          />
+        ) : null}
+      </div>
+    );
+  }
+}
+
+// const Calendar = ({
+//   events = eventsDefault,
+//   dayOrientation = "horizontal",
+//   defautlCalendarView = "week",
+//   defaultDate = new Date(),
+//   onDayChange,
+//   onWeekChange,
+//   onMonthChange
+// }) => {
+//   const [calendarView, setCalendarView] = useState(defautlCalendarView);
+//   const [day, setDay] = useState(defaultDate);
+
+//   // eslint-disable-next-line no-shadow
+//   const formatEventTime = events => {
+//     const newEvents = events.map(event => ({
+//       ...event,
+//       title: event.eventTitle,
+//       startTime: new Date(event.startTime),
+//       endTime: new Date(event.endTime)
+//     }));
+//     return newEvents;
+//   };
+
+//   const calendarSetting = view => {
+//     setCalendarView(view);
+//   };
+
+//   return (
+//     <div style={{ position: "relative" }}>
+//       <div className="calendar-view-setting">
+//         <button
+//           className={calendarView === "day" ? "active" : ""}
+//           onClick={() => calendarSetting("day")}
+//         >
+//           D
+//         </button>
+//         <button
+//           className={calendarView === "week" ? "active" : ""}
+//           onClick={() => calendarSetting("week")}
+//         >
+//           W
+//         </button>
+//         <button
+//           className={calendarView === "month" ? "active" : ""}
+//           onClick={() => calendarSetting("month")}
+//         >
+//           M
+//         </button>
+//       </div>
+//       {calendarView === "day" ? (
+//         dayOrientation === "horizontal" ? (
+//           <DayCalendar
+//             events={events}
+//             onDayChange={onDayChange}
+//             day={day}
+//             setDay={setDay}
+//           />
+//         ) : (
+//           <VerticalDayCalendar
+//             events={events}
+//             onDayChange={onDayChange}
+//             day={day}
+//             setDay={setDay}
+//           />
+//         )
+//       ) : null}
+//       {calendarView === "week" ? (
+//         <WeekCalendar
+//           events={events}
+//           onWeekChange={onWeekChange}
+//           day={day}
+//           setDay={setDay}
+//         />
+//       ) : null}
+//       {calendarView === "month" ? (
+//         <MonthCalendar
+//           events={events}
+//           onMonthChange={onMonthChange}
+//           day={day}
+//           setDay={setDay}
+//         />
+//       ) : null}
+//     </div>
+//   );
+// };
+
+Calendar.propTypes = {
+  events: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string,
+      startTime: PropTypes.instanceOf(Date),
+      endTime: PropTypes.instanceOf(Date)
+    })
+  ).isRequired,
+  dayOrientation: PropTypes.oneOf(["horizontal", "vertical"]),
+  defaultCalendarView: PropTypes.oneOf(["day", "week", "month"]),
+  onDayChange: PropTypes.func,
+  onWeekChange: PropTypes.func,
+  onMonthChange: PropTypes.func
+};
+
+Calendar.defaultProps = {
+  dayOrientation: "horizontal",
+  calendarView: "week",
+  defaultDate: new Date(),
+
+  onDayChange: () => null,
+  onWeekChange: () => null,
+  onMonthChange: () => null
+};
+
+export default Calendar;
