@@ -2,7 +2,7 @@ li {
   list-style-type: none;
 }
 .navigation {
-  color: #2C7CF1 !important;
+  color: #2c7cf1 !important;
   cursor: pointer;
 }
 .calendar-view-setting {
@@ -22,15 +22,15 @@ li {
     font-family: Verdana, sans-serif;
     font-size: 12px;
     font-weight: 500;
-    color: #838D93;
-    border: 1px solid #F0F1F1;
+    color: #838d93;
+    border: 1px solid #f0f1f1;
     cursor: pointer;
     // letter-spacing: 2px;
     line-height: 15px;
   }
 
   .active {
-    color: #F1802C;
-    border: 1px solid #F1802C;
+    color: #f1802c;
+    border: 1px solid #f1802c;
   }
 }

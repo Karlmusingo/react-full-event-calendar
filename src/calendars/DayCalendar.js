@@ -12,7 +12,9 @@ import DisplayText from "./DisplayText";
 import Event from "./Event";
 import { weekdays, months, cellWidthDayView } from "../utils/constants";
 import compareDate from "../utils/compareDate";
-import "../styles/dayCalendar.scss";
+
+import { NavArrow, Li } from "../styles/styled";
+import DayCalendarDiv from "../styles/DayCalendar.styled";
 
 export const addSuffix = date => {
   const moduloTen = date % 10,
@@ -89,53 +91,53 @@ class DayCalendar extends Component {
     const history = [];
 
     return (
-      <div id="day-calendar">
+      <DayCalendarDiv id="day-calendar">
         <div className="calendar-header">
           <div className="month" style={{ marginLeft: "430px" }}>
             <ul>
-              <li
+              <NavArrow
                 className="navigation"
                 onClick={() => this.prev()}
                 role="button"
               >
                 &#10094;
-              </li>
-              <li>
+              </NavArrow>
+              <Li>
                 <DisplayText
                   text={`${weekdays[day.getDay()]} ${addSuffix(day.getDate())}`}
                 />
-              </li>
-              <li
+              </Li>
+              <NavArrow
                 role="button"
                 className="navigation"
                 onClick={() => this.next()}
               >
                 &#10095;
-              </li>
+              </NavArrow>
             </ul>
           </div>
           <div className="month">
             <ul>
-              <li className="navigation" onClick={() => this.prevMonth()}>
+              <NavArrow className="navigation" onClick={() => this.prevMonth()}>
                 &#10094;
-              </li>
-              <li className="">
+              </NavArrow>
+              <Li className="">
                 <DisplayText
                   text={`${months[day.getMonth()]} ${day.getFullYear()}`}
                 />
-              </li>
-              <li className="navigation" onClick={() => this.nextMonth()}>
+              </Li>
+              <NavArrow className="navigation" onClick={() => this.nextMonth()}>
                 &#10095;
-              </li>
+              </NavArrow>
             </ul>
           </div>
         </div>
         <div className="calendar-body" ref={this.calendarBody}>
           <ul id="day-time">
             {[...Array(24)].map((el, index) => (
-              <li key={Math.random()}>
+              <Li key={Math.random()}>
                 <DisplayText text={this.formatHours(index)} />
-              </li>
+              </Li>
             ))}
           </ul>
 
@@ -174,63 +176,14 @@ class DayCalendar extends Component {
               );
             })}
             {[...Array(24 * 18)].map(() => (
-              <li style={{}} key={Math.random()} />
+              <Li style={{}} key={Math.random()} />
             ))}
           </ul>
         </div>
-      </div>
+      </DayCalendarDiv>
     );
   }
 }
-//////////////////////
-
-// const DayCalendar = ({ events = [], onDayChange, day, setDay }) => {
-//   const calendarBody = useRef(null);
-
-//   useEffect(() => {
-//     startOn(day.getHours());
-//   }, [day]);
-
-//   const formatHours = hour => {
-//     if (hour > 12) return `${hour - 12}PM`;
-//     if (hour === 12) return `${hour}PM`;
-//     return `${hour}AM`;
-//   };
-//   const startOn = hour => {
-//     calendarBody.current.scrollBy({
-//       top: 0,
-//       left: hour * cellWidthDayView
-//     });
-//   };
-
-//   const next = () => {
-//     const newDay = new Date(moment(day).add(1, "day"));
-//     setDay(newDay);
-//     onDayChange(day, newDay);
-//   };
-
-//   const prev = () => {
-//     const newDay = new Date(moment(day).add(-1, "week"));
-//     setDay(newDay);
-//     onDayChange(day, newDay);
-//   };
-
-//   const nextMonth = () => {
-//     const newDay = new Date(moment(day).add(1, "month"));
-//     setDay(newDay);
-//     onDayChange(day, newDay);
-//   };
-
-//   const prevMonth = () => {
-//     const newDay = new Date(moment(day).add(-1, "month"));
-//     setDay(newDay);
-//     onDayChange(day, newDay);
-//   };
-
-//   events.sort((a, b) => a.startTime.getHours() - b.startTime.getHours());
-
-//   const history = [];
-// };
 
 DayCalendar.propTypes = {
   events: PropTypes.arrayOf(

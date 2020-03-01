@@ -7,7 +7,9 @@ import moment from "moment";
 import { weekdays, months } from "../utils/constants";
 import DisplayText from "./DisplayText";
 import DisplayEvent from "./DisplayEvent";
-import "../styles.css";
+
+import MonthCalendarDiv from "../styles/MonthCalendar.styled";
+import { NavArrow, Li } from "../styles/styled";
 
 const today = new Date();
 
@@ -15,7 +17,7 @@ class MonthCalendar extends Component {
   state = { month: today.getMonth(), year: today.getFullYear() };
 
   componentDidMount = () => {
-    const { onMonthChange, day, setDay } = this.props;
+    const { onMonthChange, day = today, setDay } = this.props;
     this.setState({
       month: day.getMonth(),
       year: day.getFullYear()
@@ -57,19 +59,27 @@ class MonthCalendar extends Component {
     const skipDays = new Date(year, month).getDay();
 
     return (
-      <div id="month-calendar">
+      <MonthCalendarDiv id="month-calendar">
         <div className="calendar-header">
           <div className="month">
             <ul>
-              <li id="prev" className="navigation" onClick={() => this.prev()}>
+              <NavArrow
+                id="prev"
+                className="navigation"
+                onClick={() => this.prev()}
+              >
                 &#10094;
-              </li>
-              <li id="month">
+              </NavArrow>
+              <Li id="month">
                 <DisplayText text={`${months[month]} ${year}`} />
-              </li>
-              <li id="next" className="navigation" onClick={() => this.next()}>
+              </Li>
+              <NavArrow
+                id="next"
+                className="navigation"
+                onClick={() => this.next()}
+              >
                 &#10095;
-              </li>
+              </NavArrow>
             </ul>
           </div>
         </div>
@@ -77,7 +87,7 @@ class MonthCalendar extends Component {
         <ul id="weekdays">
           {// eslint-disable-next-line no-shadow
           weekdays.map(day => (
-            <li key={Math.random()}>{day}</li>
+            <Li key={Math.random()}>{day}</Li>
           ))}
         </ul>
 
@@ -89,11 +99,11 @@ class MonthCalendar extends Component {
             // eslint-disable-next-line no-shadow
           ].map((day, index) =>
             day === "*" ? (
-              <li className="empty-cells" key={Math.random()}>
+              <Li className="empty-cells" key={Math.random()}>
                 {numberOfDaysPreviousMonth - (skipDays - 1) + index}
-              </li>
+              </Li>
             ) : (
-              <li
+              <Li
                 className={
                   index > numberOfDays + skipDays - 1 ? "empty-cells" : " "
                 }
@@ -102,7 +112,8 @@ class MonthCalendar extends Component {
                 {day + 1 &&
                 day + 1 === today.getDate() &&
                 today.getMonth() === month &&
-                today.getFullYear() === year ? (
+                today.getFullYear() === year &&
+                index < skipDays + numberOfDays ? (
                   <span className="currentDay">{day + 1}</span>
                 ) : (
                   day + 1
@@ -112,7 +123,9 @@ class MonthCalendar extends Component {
                 {events.map(event => {
                   if (
                     day + 1 === event.startTime.getDate() &&
-                    month === event.startTime.getMonth()
+                    month === event.startTime.getMonth() &&
+                    year === event.startTime.getFullYear() &&
+                    index < skipDays + numberOfDays
                   ) {
                     return (
                       <DisplayEvent
@@ -124,38 +137,13 @@ class MonthCalendar extends Component {
                     );
                   }
                 })}
-              </li>
+              </Li>
             )
           )}
         </ul>
-      </div>
+      </MonthCalendarDiv>
     );
   }
 }
-
-// const MonthCalendar = ({ events, onMonthChange, day, setDay }) => {
-//   const [month, setMonth] = useState(day.getMonth());
-//   const [year, setYear] = useState(day.getFullYear());
-
-//   const numberOfDays = new Date(year, month + 1, 0).getDate();
-//   const numberOfDaysPreviousMonth = new Date(year, month, 0).getDate();
-//   const skipDays = new Date(year, month).getDay();
-
-//   useEffect(() => {
-//     setMonth(day.getMonth());
-//     setYear(day.getFullYear());
-//     onMonthChange(month, year);
-//   }, [day, onMonthChange, month, year]);
-
-//   const next = () => {
-//     const newDay = new Date(moment(day).add(1, "month"));
-//     setDay(newDay);
-//   };
-
-//   const prev = () => {
-//     const newDay = new Date(moment(day).add(-1, "month"));
-//     setDay(newDay);
-//   };
-// };
 
 export default MonthCalendar;
