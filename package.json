@@ -4,7 +4,7 @@
   "description": "React component for events",
   "author": "Karlmusingo",
   "license": "MIT",
-  "repository": "karlmusingo/react-calendar-from-scratch",
+  "repository": "karlmusingo/react-full-event-calendar",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "jsnext:main": "dist/index.es.js",

@@ -1,5 +1,5 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react'
+import PropTypes from 'prop-types'
 
 const DisplayEvent = ({ text, ttitle, title, name, style = {} }) => (
   <span style={style}>
@@ -13,7 +13,7 @@ const DisplayEvent = ({ text, ttitle, title, name, style = {} }) => (
       </a>
     </ul>
   </span>
-);
+)
 
 DisplayEvent.propTypes = {
   text: PropTypes.string.isRequired,
@@ -21,12 +21,12 @@ DisplayEvent.propTypes = {
   ttitle: PropTypes.string,
   title: PropTypes.string,
   style: PropTypes.object
-};
+}
 
 DisplayEvent.defaultProps = {
   style: {},
-  ttitle: "",
-  title: ""
-};
+  ttitle: '',
+  title: ''
+}
 
-export default DisplayEvent;
+export default DisplayEvent
